@@ -1,0 +1,10 @@
+body {
+    font-family: 'Helvetica Neue';
+    color : rgba(43, 45, 66, 1);
+    background-color: #F1F4F6;
+}
+
+h1,h2,h3,h4,h5 {
+    font-family: 'Helvetica Neue';
+    font-weight: 800;
+}
