@@ -3,12 +3,12 @@
 import { connect } from 'react-redux';
 
 // Local Imports 
-import {Movie} from './movie'
+import { Movie } from './movie'
 
-let mapsStatToProps = (state) => {
+let mapStatToProps = (state) => {
     return {
         people : state.people
     }
 }
 
-export default connect( mapsStatToProps )( Movie )
+export default connect( mapStatToProps )( Movie )

@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 // Local Imports 
 import { Character } from './character'
 
-let mapsStatToProps = (state) => {
+let mapStatToProps = (state) => {
     return {
         people : state.people
     }
 }
 
-export default connect( mapsStatToProps )( Character )
+export default connect( mapStatToProps )( Character )

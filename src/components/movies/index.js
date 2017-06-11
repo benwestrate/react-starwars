@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 // Local Imports 
 import {Movies} from './movies'
 
-let mapsStatToProps = (state) => {
+let mapStatToProps = (state) => {
     return {
-        movies : state.movies,
+        movies              : state.movies,
+        sortByEpisode       : state.global.episodeSort,
+        sortByReleaseDate   : state.global.releaseDateSort
     }
 }
 
-export default connect( mapsStatToProps )( Movies )
+export default connect( mapStatToProps )( Movies )

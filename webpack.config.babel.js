@@ -10,7 +10,8 @@ export default {
         alias: {
             constants$ : path.resolve(__dirname, "src/constants/index.js" ),
             actions$   : path.resolve(__dirname, "src/store/states/actionsExporter.js" ),
-            vars$      : path.resolve(__dirname, "src/lib/css/vars.js" )
+            vars$      : path.resolve(__dirname, "src/lib/css/vars.js" ),
+            mixins$    : path.resolve(__dirname, "src/lib/css/mixins.js" )
         }
     },
     entry : __dirname + '/src/main.js',

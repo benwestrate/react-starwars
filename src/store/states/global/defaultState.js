@@ -1,5 +1,9 @@
 
 
 export default {
-    renderApp : false
+    isMobile        : true,
+    renderApp       : false,
+    showSideBar     : false,
+    episodeSort     : 'asc',
+    releaseDateSort : null
 }

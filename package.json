@@ -7,7 +7,7 @@
     "start": "npm run build:watch",
     "build": "webpack",
     "build:watch": "webpack-dev-server",
-    "build:prod": "webpack -p",
+    "build:prod": "webpack -p && git add public/ && git commit -m'getting content ready for gh-pages' && git subtree push --prefix public origin gh-pages",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

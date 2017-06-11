@@ -6,14 +6,30 @@ import { StyleSheet, css } from 'aphrodite/no-important'
 
 //Local Imports 
 import {
-    fontColor }         from 'vars';
+    fontColor,
+    background }        from 'vars';
+import { makeButton }   from 'mixins';
 import Character        from '../character';
 import CrawlChart       from '../crawlChart';
 import { Han, JarJar }  from 'constants';
 
 export class SideBar extends Component {
+    
     render() {
-        return <div className={css(styles.wrapper)}>
+        let { showSideBar, toggleSideBar } = this.props;
+        let wrapperClass = css(
+            styles.wrapper,
+            showSideBar ? styles.showSideBar : ''
+        )
+
+
+
+        return <div className={ wrapperClass }>
+           <div className={ css(styles.mobileSideBarHeader) }>
+                <button className={ css(styles.close) } onClick={toggleSideBar.bind(null, !showSideBar)}>
+                    <i className="fa fa-times" aria-hidden="true"></i>
+                </button>
+           </div>
            <Character 
                 title="My Favorite Character" 
                 personConstant={Han}
@@ -33,6 +49,30 @@ const styles = StyleSheet.create({
     wrapper : {
         minWidth : '250px',
         maxWidth : '300px',
-        padding : '10px'
-    }
+        padding : '10px',
+        display : 'none',
+        '@media (max-width: 600px)': {
+            maxWidth : '100%'
+        }
+    },
+    showSideBar : {
+        display : 'block'
+    },
+    mobileSideBarHeader : {
+        display : 'none',
+        '@media (max-width: 600px)': {
+            display : 'block',
+            height : '60px',
+            width  : 'calc(100% + 20px)',
+            backgroundColor : background,
+            margin : '-10px -10px 0 -10px',
+            boxShadow : 'inset 0 8px 6px -6px black'
+        }
+    },
+    close : makeButton({
+        float : 'right',
+        borderRadius : '5px'
+    })
 })
+
+export default SideBar

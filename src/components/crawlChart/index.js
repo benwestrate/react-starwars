@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 // Local Imports 
 import { CrawlChart } from './crawlChart'
 
-let mapsStatToProps = (state) => {
+let mapStatToProps = (state) => {
     return {
         movies : state.movies
     }
 }
 
-export default connect( mapsStatToProps )( CrawlChart )
+export default connect( mapStatToProps )( CrawlChart )
