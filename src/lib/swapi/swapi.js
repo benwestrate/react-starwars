@@ -9,7 +9,7 @@ import processPeople    from './processPeople'
 export const getMovies = () => { 
     return new Promise( ( resolve, reject ) => {
 
-        fetch('http://swapi.co/api/films/')
+        fetch('//swapi.co/api/films/')
             .then((response) => {
                 return response.json()
             }).then( ( movies ) => {
@@ -24,7 +24,7 @@ export const getMovies = () => {
     } )
 }
 
-export const getAllPeople = ( url = 'http://swapi.co/api/people/') => {
+export const getAllPeople = ( url = '//swapi.co/api/people/') => {
     let currentState = starwars.applicationStore.getState();
 
     return new Promise( ( resolve, reject ) => {
@@ -39,7 +39,7 @@ export const getAllPeople = ( url = 'http://swapi.co/api/people/') => {
                     starwars.applicationStore.dispatch( setPeopleCount( currentState.people.count + people.results.length ) );
 
                     if( people.next !== null ){
-                        getAllPeople( people.next )
+                        getAllPeople( people.next.replace('http:', '') )
                     } 
                 }
 
