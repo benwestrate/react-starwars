@@ -12281,7 +12281,7 @@ module.exports = function(module) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getPerson = exports.getAllPeople = exports.getMovies = undefined;
+exports.getAllPeople = exports.getMovies = undefined;
 
 var _axios = __webpack_require__(251);
 
@@ -12307,6 +12307,7 @@ var getMovies = exports.getMovies = function getMovies() {
             var movies = result.data;
             var processedMovies = (0, _processMovies2.default)(movies);
             starwars.applicationStore.dispatch((0, _actions.setAllMovies)(processedMovies));
+            starwars.applicationStore.dispatch((0, _actions.allMoviesLoaded)());
             resolve(movies);
         }).catch(function (ex) {
             console.error(ex);
@@ -12332,25 +12333,12 @@ var getAllPeople = exports.getAllPeople = function getAllPeople() {
 
                 if (people.next !== null) {
                     getAllPeople(people.next.replace('http:', ''));
+                } else {
+                    starwars.applicationStore.dispatch((0, _actions.allPeopleLoaded)());
                 }
             }
 
             resolve(people);
-        }).catch(function (ex) {
-            console.error(ex);
-        });
-    });
-};
-
-var getPerson = exports.getPerson = function getPerson(url) {
-    return new Promise(function (resolve, reject) {
-        fetch(url).then(function (response) {
-            return response.json();
-        }).then(function (person) {
-            console.log('====================================');
-            console.log(person);
-            console.log('====================================');
-            resolve(person);
         }).catch(function (ex) {
             console.error(ex);
         });
@@ -33355,15 +33343,12 @@ var Character = exports.Character = function (_Component) {
     function Character(props) {
         _classCallCheck(this, Character);
 
-        var _this = _possibleConstructorReturn(this, (Character.__proto__ || Object.getPrototypeOf(Character)).call(this, props));
-
-        _this.shouldRender = _this.shouldRender.bind(_this);
-        return _this;
+        return _possibleConstructorReturn(this, (Character.__proto__ || Object.getPrototypeOf(Character)).call(this, props));
     }
 
     _createClass(Character, [{
-        key: 'shouldRender',
-        value: function shouldRender(person) {
+        key: 'render',
+        value: function render() {
             var _props = this.props,
                 people = _props.people,
                 personConstant = _props.personConstant,
@@ -33372,85 +33357,67 @@ var Character = exports.Character = function (_Component) {
                 sideOfTheForce = _props.sideOfTheForce;
 
 
-            var markup = null;
+            var person = people[personConstant];
+
             var good = sideOfTheForce === 'light' ? true : false;
 
             var wrapperClass = (0, _noImportant.css)(styles.wrapper, good ? styles.lightSide : styles.darkSide);
 
-            if (person) {
-                markup = _react2.default.createElement(
-                    'div',
-                    { className: wrapperClass },
+            return _react2.default.createElement(
+                'div',
+                { className: wrapperClass },
+                _react2.default.createElement(
+                    'h3',
+                    { className: (0, _noImportant.css)(styles.title) },
+                    ' ',
+                    title,
+                    ' '
+                ),
+                _react2.default.createElement('img', { className: (0, _noImportant.css)(styles.img), src: imgSrc }),
+                _react2.default.createElement(
+                    'p',
+                    { className: (0, _noImportant.css)(styles.infoRow, styles.stripe) },
                     _react2.default.createElement(
-                        'h3',
-                        { className: (0, _noImportant.css)(styles.title) },
-                        ' ',
-                        title,
-                        ' '
-                    ),
-                    _react2.default.createElement('img', { className: (0, _noImportant.css)(styles.img), src: imgSrc }),
-                    _react2.default.createElement(
-                        'p',
-                        { className: (0, _noImportant.css)(styles.infoRow, styles.stripe) },
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.dec) },
-                            ' Name  '
-                        ),
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.info) },
-                            person.name
-                        )
+                        'span',
+                        { className: (0, _noImportant.css)(styles.dec) },
+                        ' Name  '
                     ),
                     _react2.default.createElement(
-                        'p',
-                        { className: (0, _noImportant.css)(styles.infoRow) },
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.dec) },
-                            ' Birth Year  '
-                        ),
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.info) },
-                            person.birth_year
-                        )
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { className: (0, _noImportant.css)(styles.infoRow, styles.stripe) },
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.dec) },
-                            ' Height  '
-                        ),
-                        _react2.default.createElement(
-                            'span',
-                            { className: (0, _noImportant.css)(styles.info) },
-                            person.height,
-                            ' in cm'
-                        )
+                        'span',
+                        { className: (0, _noImportant.css)(styles.info) },
+                        person.name
                     )
-                );
-            }
-
-            return markup;
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _props2 = this.props,
-                people = _props2.people,
-                personConstant = _props2.personConstant,
-                title = _props2.title,
-                imgSrc = _props2.imgSrc,
-                sideOfTheForce = _props2.sideOfTheForce;
-
-
-            var person = people[personConstant];
-
-            return this.shouldRender(person);
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: (0, _noImportant.css)(styles.infoRow) },
+                    _react2.default.createElement(
+                        'span',
+                        { className: (0, _noImportant.css)(styles.dec) },
+                        ' Birth Year  '
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { className: (0, _noImportant.css)(styles.info) },
+                        person.birth_year
+                    )
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: (0, _noImportant.css)(styles.infoRow, styles.stripe) },
+                    _react2.default.createElement(
+                        'span',
+                        { className: (0, _noImportant.css)(styles.dec) },
+                        ' Height  '
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { className: (0, _noImportant.css)(styles.info) },
+                        person.height,
+                        ' in cm'
+                    )
+                )
+            );
         }
     }]);
 
@@ -34208,6 +34175,8 @@ var GLOBAL_TOGGLE_IS_MOBILE = exports.GLOBAL_TOGGLE_IS_MOBILE = 'GLOBAL_TOGGLE_I
 var GLOBAL_TOGGLE_SIDE_BAR = exports.GLOBAL_TOGGLE_SIDE_BAR = 'GLOBAL_TOGGLE_SIDE_BAR';
 var GLOBAL_TOGGLE_EPISODE_SORT = exports.GLOBAL_TOGGLE_EPISODE_SORT = 'GLOBAL_TOGGLE_EPISODE_SORT';
 var GLOBAL_TOGGLE_RELEASE_DATE_SORT = exports.GLOBAL_TOGGLE_RELEASE_DATE_SORT = 'GLOBAL_TOGGLE_RELEASE_DATE_SORT';
+var GLOBAL_ALL_MOVIES_LOADED = exports.GLOBAL_ALL_MOVIES_LOADED = 'GLOBAL_ALL_MOVIES_LOADED';
+var GLOBAL_ALL_PEOPLE_LOADED = exports.GLOBAL_ALL_PEOPLE_LOADED = 'GLOBAL_ALL_PEOPLE_LOADED';
 
 /***/ }),
 /* 284 */
@@ -34461,13 +34430,22 @@ window.onresize = function () {
     }
 };
 
-Promise.all([(0, _swapi.getMovies)(), (0, _swapi.getAllPeople)()]).then(function () {});
+// Load all data 
+(0, _swapi.getMovies)();
+(0, _swapi.getAllPeople)();
 
-_reactDom2.default.render(_react2.default.createElement(
-    _reactRedux.Provider,
-    { store: store },
-    _react2.default.createElement(_app.App, null)
-), entryElement);
+var renderSubscription = store.subscribe(function () {
+    var state = store.getState();
+
+    if (state.global.loaded.movies && state.global.loaded.people) {
+        _reactDom2.default.render(_react2.default.createElement(
+            _reactRedux.Provider,
+            { store: store },
+            _react2.default.createElement(_app.App, null)
+        ), entryElement);
+        renderSubscription();
+    }
+});
 
 /***/ }),
 /* 291 */
@@ -34479,7 +34457,7 @@ _reactDom2.default.render(_react2.default.createElement(
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.sortByReleaseDate = exports.sortByEpisodeNum = exports.toggleShowSideBar = exports.isMobile = undefined;
+exports.allPeopleLoaded = exports.allMoviesLoaded = exports.sortByReleaseDate = exports.sortByEpisodeNum = exports.toggleShowSideBar = exports.isMobile = undefined;
 
 var _constants = __webpack_require__(18);
 
@@ -34515,6 +34493,19 @@ var sortByReleaseDate = exports.sortByReleaseDate = function sortByReleaseDate(d
     };
 };
 
+var allMoviesLoaded = exports.allMoviesLoaded = function allMoviesLoaded() {
+
+    return {
+        type: _constants.GLOBAL_ALL_MOVIES_LOADED
+    };
+};
+var allPeopleLoaded = exports.allPeopleLoaded = function allPeopleLoaded() {
+
+    return {
+        type: _constants.GLOBAL_ALL_PEOPLE_LOADED
+    };
+};
+
 /***/ }),
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -34527,10 +34518,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     isMobile: true,
-    renderApp: false,
     showSideBar: false,
     episodeSort: 'asc',
-    releaseDateSort: null
+    releaseDateSort: null,
+    loaded: {
+        movies: false,
+        people: false
+    }
 };
 
 /***/ }),
@@ -34580,6 +34574,20 @@ exports.default = function () {
             state = _extends({}, state, {
                 releaseDateSort: action.desc ? 'desc' : 'asc',
                 episodeSort: null
+            });
+            break;
+        case _constants.GLOBAL_ALL_PEOPLE_LOADED:
+            state = _extends({}, state, {
+                loaded: _extends({}, state.loaded, {
+                    people: true
+                })
+            });
+            break;
+        case _constants.GLOBAL_ALL_MOVIES_LOADED:
+            state = _extends({}, state, {
+                loaded: _extends({}, state.loaded, {
+                    movies: true
+                })
             });
             break;
         default:
