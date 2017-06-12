@@ -7,7 +7,8 @@ import { CrawlChart } from './crawlChart'
 
 let mapStatToProps = (state) => {
     return {
-        movies : state.movies
+        movies          : state.movies,
+        allMoviesLoaded : state.global.loaded.movies
     }
 }
 

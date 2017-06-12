@@ -1,21 +1,26 @@
+// NPM Imports
+import axios from 'axios'
+
 // Local Imports
 import { 
     setAllMovies,
     setPeople,
-    setPeopleCount }    from 'actions';
+    setPeopleCount,
+    allMoviesLoaded,
+    allPeopleLoaded }   from 'actions';
 import processMovies    from './processMovies'
 import processPeople    from './processPeople'
 
 export const getMovies = () => { 
     return new Promise( ( resolve, reject ) => {
 
-        fetch('//swapi.co/api/films/')
-            .then((response) => {
-                return response.json()
-            }).then( ( movies ) => {
-                return processMovies( movies );
-            } ).then( ( movies ) => {
-               starwars.applicationStore.dispatch( setAllMovies( movies ) )
+        axios.get('//swapi.co/api/films/')
+            .then( ( result ) => {
+                let movies = result.data;
+                let processedMovies = processMovies( movies );
+                starwars.applicationStore.dispatch( setAllMovies( processedMovies ) )
+                starwars.applicationStore.dispatch( allMoviesLoaded( ) )
+                resolve( movies )
             } )
             .catch((ex) => {
                 console.error( ex )
@@ -28,10 +33,10 @@ export const getAllPeople = ( url = '//swapi.co/api/people/') => {
     let currentState = starwars.applicationStore.getState();
 
     return new Promise( ( resolve, reject ) => {
-        fetch(url)
-            .then((response) => {
-                return response.json()
-            }).then( ( people ) => {
+        axios.get(url)
+            .then( ( result ) => {
+                
+                let people = result.data;
 
                 if( currentState.people.count !== people.count ){
                     let processedPeople = processPeople( people );
@@ -40,27 +45,14 @@ export const getAllPeople = ( url = '//swapi.co/api/people/') => {
 
                     if( people.next !== null ){
                         getAllPeople( people.next.replace('http:', '') )
-                    } 
+                    } else {
+                        starwars.applicationStore.dispatch( allPeopleLoaded() )
+                    }
+                } else {
+                    starwars.applicationStore.dispatch( allPeopleLoaded() )
                 }
 
-            } )
-            .catch((ex) => {
-                console.error( ex )
-            })
-    } )
-}
-
-
-export const getPerson = ( url ) => { 
-    return new Promise( ( resolve, reject ) => {
-        fetch(url)
-            .then((response) => {
-                return response.json()
-            }).then( ( person ) => {
-                console.log('====================================');
-                console.log(person);
-                console.log('====================================');
-                resolve( person );
+                resolve( people )
             } )
             .catch((ex) => {
                 console.error( ex )

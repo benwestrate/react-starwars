@@ -3,6 +3,7 @@
 import React        from 'react';
 import ReactDom     from 'react-dom';
 import { Provider } from 'react-redux';
+import 'whatwg-fetch'
 
 // Local Imports
 import { App }                  from './app.js';
@@ -10,6 +11,9 @@ import initStore                from './store/store.js';
 import { 
     toggleShowSideBar,
     isMobile }                  from 'actions'
+import { 
+    getMovies,
+    getAllPeople }              from './lib/swapi/swapi'
 
 const store = initStore();
 window.starwars = {
@@ -36,7 +40,19 @@ window.onresize = () => {
     }
 }
 
+// Load all data 
+getMovies()
+getAllPeople()
 
-ReactDom.render( <Provider store={store}>
-    <App />
-</Provider>, entryElement );
+
+let renderSubscription = store.subscribe( () => {
+    let state = store.getState();
+
+    if( state.global.loaded.movies && state.global.loaded.people ){
+        ReactDom.render( <Provider store={store}>
+                <App />
+        </Provider>, entryElement );
+        renderSubscription();
+    }
+} )
+

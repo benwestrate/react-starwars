@@ -4,7 +4,9 @@ import {
     GLOBAL_TOGGLE_IS_MOBILE,
     GLOBAL_TOGGLE_SIDE_BAR,
     GLOBAL_TOGGLE_EPISODE_SORT,
-    GLOBAL_TOGGLE_RELEASE_DATE_SORT }   from 'constants'
+    GLOBAL_TOGGLE_RELEASE_DATE_SORT,
+    GLOBAL_ALL_MOVIES_LOADED,
+    GLOBAL_ALL_PEOPLE_LOADED }          from 'constants'
 
 
 export default ( state = defautState, action ) => {
@@ -36,6 +38,24 @@ export default ( state = defautState, action ) => {
                 episodeSort     : null
             }
             break 
+        case GLOBAL_ALL_PEOPLE_LOADED : 
+            state = {
+                ...state,
+                loaded : {
+                    ...state.loaded,
+                    people : true
+                }
+            }
+            break;
+        case GLOBAL_ALL_MOVIES_LOADED : 
+            state = {
+                ...state,
+                loaded : {
+                    ...state.loaded,
+                    movies : true
+                }
+            }
+            break;
         default:
             state = {
                 ...state

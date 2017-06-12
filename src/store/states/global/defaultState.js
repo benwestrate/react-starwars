@@ -2,8 +2,11 @@
 
 export default {
     isMobile        : true,
-    renderApp       : false,
     showSideBar     : false,
     episodeSort     : 'asc',
-    releaseDateSort : null
+    releaseDateSort : null,
+    loaded          : { 
+        movies : false, 
+        people : false 
+    }
 }

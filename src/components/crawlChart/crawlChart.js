@@ -19,12 +19,13 @@ export class CrawlChart extends Component {
             data : null
         }
 
-        this.getMovieScrollCounts = this.getMovieScrollCounts.bind(this);
+        this.makeDataForGraph       = this.makeDataForGraph.bind(this);
+        this.getMovieScrollCounts   = this.getMovieScrollCounts.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    makeDataForGraph( props ){
 
-        let { movies }   = nextProps;
+        let { movies }   = props;
         let lengths      = [];
         let color        = Color(highlight2)
         
@@ -41,7 +42,7 @@ export class CrawlChart extends Component {
                     backgroundColor: color.rgb().string(),
                     borderColor: color.darken(.1).rgb().string(),
                     borderWidth: 1,
-                    data: this.getMovieScrollCounts( nextProps ),
+                    data: this.getMovieScrollCounts( props ),
                     hoverBackgroundColor: color.darken(.5).rgb().string(),
                     hoverBorderColor:color.darken(.6).rgb().string(),
                     label:'Open Crawl Length'
@@ -50,6 +51,14 @@ export class CrawlChart extends Component {
         }
 
         this.setState( { data : data } )
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.makeDataForGraph( nextProps )
+    }
+
+    componentWillMount() {
+        this.makeDataForGraph( this.props )
     }
 
     getMovieScrollCounts( nextProps ) {
@@ -68,7 +77,11 @@ export class CrawlChart extends Component {
 
     render() {
         
-        let chart = this.state.data ? <HorizontalBar data={ this.state.data } width={90} /> : null
+        let chart = this.state.data && this.props.allMoviesLoaded ? <HorizontalBar data={ this.state.data } width={90} /> : null
+
+        console.log('====================================');
+        console.log(chart);
+        console.log('====================================');
 
         return <div className={ css(styles.wrapper) } > 
             {chart}

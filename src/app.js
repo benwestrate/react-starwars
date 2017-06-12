@@ -9,8 +9,7 @@ import { getMovies,getAllPeople }   from './lib/swapi/swapi'
 
 export class App extends React.Component {
     componentWillMount() {
-        getMovies();
-        getAllPeople();
+        
     }
     render() {
         return <Layout/>
