@@ -12336,6 +12336,8 @@ var getAllPeople = exports.getAllPeople = function getAllPeople() {
                 } else {
                     starwars.applicationStore.dispatch((0, _actions.allPeopleLoaded)());
                 }
+            } else {
+                starwars.applicationStore.dispatch((0, _actions.allPeopleLoaded)());
             }
 
             resolve(people);
@@ -33539,14 +33541,15 @@ var CrawlChart = exports.CrawlChart = function (_Component) {
             data: null
         };
 
+        _this.makeDataForGraph = _this.makeDataForGraph.bind(_this);
         _this.getMovieScrollCounts = _this.getMovieScrollCounts.bind(_this);
         return _this;
     }
 
     _createClass(CrawlChart, [{
-        key: 'componentWillReceiveProps',
-        value: function componentWillReceiveProps(nextProps) {
-            var movies = nextProps.movies;
+        key: 'makeDataForGraph',
+        value: function makeDataForGraph(props) {
+            var movies = props.movies;
 
             var lengths = [];
             var color = (0, _color2.default)(_vars.highlight2);
@@ -33565,7 +33568,7 @@ var CrawlChart = exports.CrawlChart = function (_Component) {
                     backgroundColor: color.rgb().string(),
                     borderColor: color.darken(.1).rgb().string(),
                     borderWidth: 1,
-                    data: this.getMovieScrollCounts(nextProps),
+                    data: this.getMovieScrollCounts(props),
                     hoverBackgroundColor: color.darken(.5).rgb().string(),
                     hoverBorderColor: color.darken(.6).rgb().string(),
                     label: 'Open Crawl Length'
@@ -33573,6 +33576,16 @@ var CrawlChart = exports.CrawlChart = function (_Component) {
             };
 
             this.setState({ data: data });
+        }
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextProps) {
+            this.makeDataForGraph(nextProps);
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            this.makeDataForGraph(this.props);
         }
     }, {
         key: 'getMovieScrollCounts',
@@ -33593,7 +33606,11 @@ var CrawlChart = exports.CrawlChart = function (_Component) {
         key: 'render',
         value: function render() {
 
-            var chart = this.state.data ? _react2.default.createElement(_reactChartjs.HorizontalBar, { data: this.state.data, width: 90 }) : null;
+            var chart = this.state.data && this.props.allMoviesLoaded ? _react2.default.createElement(_reactChartjs.HorizontalBar, { data: this.state.data, width: 90 }) : null;
+
+            console.log('====================================');
+            console.log(chart);
+            console.log('====================================');
 
             return _react2.default.createElement(
                 'div',
@@ -33634,7 +33651,8 @@ var _crawlChart = __webpack_require__(275);
 // NPM Imports
 var mapStatToProps = function mapStatToProps(state) {
     return {
-        movies: state.movies
+        movies: state.movies,
+        allMoviesLoaded: state.global.loaded.movies
     };
 };
 
